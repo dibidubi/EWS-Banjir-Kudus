@@ -694,7 +694,7 @@ task = ee.batch.Export.image.toDrive(
 )
 task.start()
 
-!pip install geopandas rasterio matplotlib earthpy
+#!pip install geopandas rasterio matplotlib earthpy
 
 import geopandas as gpd
 import rasterio
