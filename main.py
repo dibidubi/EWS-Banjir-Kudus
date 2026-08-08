@@ -851,7 +851,7 @@ plt.legend(loc='upper right', framealpha=0.9, fontsize=9)
 plt.tight_layout()
 plt.show()
 
-!pip install xarray rioxarray geopandas matplotlib cartopy
+#!pip install xarray rioxarray geopandas matplotlib cartopy
 
 # =========================================================================
 # TAHAP 2: PENGOLAHAN AKUMULASI 3 HARIAN & PERHITUNGAN PERSENTIL (EWS)
