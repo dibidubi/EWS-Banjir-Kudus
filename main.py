@@ -1,125 +1,57 @@
-import ee
 import requests
 import datetime
 import os
 
 # ---------------------------------------------------------
-# 1. INISIALISASI EARTH ENGINE
-# ---------------------------------------------------------
-project_id = 'cogent-treat-504315-g3'
-ee_key = os.environ.get("GCP_SA_KEY")
-
-if ee_key:
-    # Berjalan di GitHub Actions menggunakan Service Account
-    credentials = ee.ServiceAccountCredentials(None, key_data=ee_key)
-    ee.Initialize(credentials, project=project_id)
-else:
-    # Berjalan di komputer lokal / Google Colab
-    ee.Initialize(project=project_id)
-
-# ---------------------------------------------------------
-# 2. KONFIGURASI BOT TELEGRAM & LOKASI
+# 1. KONFIGURASI
 # ---------------------------------------------------------
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "8766604439:AAFan6okia5TG_WEr1YFUeidnT9MgLqxKh8")
 CHAT_ID = os.environ.get("CHAT_ID", "@notifperingatandini")
 
 LOKASI_NAMA = "Kabupaten Kudus (DAS Sungai Wulan)"
 LAT, LON = -6.8321, 110.8423
-roi = ee.Geometry.Point([LON, LAT])
 
-THRESHOLD_SIAGA = 100.0
-THRESHOLD_AWAS = 150.0
+# ---------------------------------------------------------
+# 2. AMBIL DATA CURAH HUJAN REAL-TIME
+# ---------------------------------------------------------
+url = f"https://api.open-meteo.com/v1/forecast?latitude={LAT}&longitude={LON}&daily=precipitation_sum&timezone=auto"
+response = requests.get(url).json()
 
-# Mundurkan tanggal ke H-10 sampai H-5 agar pasti mendapatkan data CHIRPS dari GEE
 today = datetime.date.today()
-end_date = today - datetime.timedelta(days=5)
-start_date = today - datetime.timedelta(days=10)
+rain_val = response['daily']['precipitation_sum'][0]  # Total hujan hari ini (mm)
+rain_val_rounded = round(rain_val, 2)
 
 # ---------------------------------------------------------
-# 3. AMBIL DATA CHIRPS DARI GEE
+# 3. EVALUASI STATUS & BUAT PESAN
 # ---------------------------------------------------------
-collection = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY") \
-    .filterDate(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')) \
-    .select('precipitation')
-
-if collection.size().getInfo() == 0:
-    print("Tidak ada data CHIRPS yang tersedia untuk rentang tanggal ini.")
-    rain_val = None
+if rain_val_rounded >= 150.0:
+    status_code, emoji, saran = "🚨 AWAS", "🔴", "Potensi banjir tinggi! Segera tingkatkan kesiapsiagaan di area cekungan/bantaran sungai."
+elif rain_val_rounded >= 100.0:
+    status_code, emoji, saran = "⚠️ SIAGA", "🟡", "Waspada luapan debit air sungai dalam 24 jam ke depan."
 else:
-    chirps_3d = collection.sum().rename('accumulated_precipitation')
+    status_code, emoji, saran = "✅ AMAN", "🟢", "Kondisi hidrometeorologi relatif normal."
 
-    stats = chirps_3d.reduceRegion(
-        reducer=ee.Reducer.mean(),
-        geometry=roi,
-        scale=5500,
-        bestEffort=True,
-        tileScale=16
-    )
-
-    stats_dict = stats.getInfo()
-
-    if stats_dict and 'accumulated_precipitation' in stats_dict:
-        rain_val = stats_dict['accumulated_precipitation']
-    else:
-        print("Gagal menemukan kunci 'accumulated_precipitation' dalam hasil reduksi.")
-        rain_val = None
-
-# ---------------------------------------------------------
-# 4. FUNGSI KIRIM TELEGRAM
-# ---------------------------------------------------------
-def send_telegram_alert(message, token, chat_id):
-    """Fungsi untuk mengirim notifikasi pesan ke Telegram"""
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    payload = {
-        "chat_id": chat_id,
-        "text": message,
-        "parse_mode": "Markdown"
-    }
-    response = requests.post(url, json=payload)
-    return response.json()
-
-# ---------------------------------------------------------
-# 5. EVALUASI DAN KIRIM NOTIFIKASI
-# ---------------------------------------------------------
-if rain_val is not None:
-    rain_val_rounded = round(rain_val, 2)
-
-    if rain_val_rounded >= THRESHOLD_AWAS:
-        status_code = "🚨 AWAS"
-        emoji = "🔴"
-        saran = "Potensi banjir tinggi! Segera tingkatkan kesiapsiagaan di area cekungan/bantaran sungai."
-    elif rain_val_rounded >= THRESHOLD_SIAGA:
-        status_code = "⚠️ SIAGA"
-        emoji = "🟡"
-        saran = "Waspada luapan debit air sungai dalam 24 jam ke depan."
-    else:
-        status_code = "✅ AMAN"
-        emoji = "🟢"
-        saran = "Kondisi hidrometeorologi relatif normal."
-
-    pesan_telegram = f"""
+pesan_telegram = f"""
 {emoji} *SISTEM PERINGATAN DINI BANJIR (EWS)* {emoji}
 ---------------------------------------------
 📍 *Lokasi Monitor:* {LOKASI_NAMA}
 📅 *Tanggal Analisis:* {today.strftime('%d %B %Y')}
-🌧️ *Akumulasi Hujan (3-Hari Terakhir):* {rain_val_rounded} mm
+🌧️ *Curah Hujan Hari Ini:* {rain_val_rounded} mm
 📊 *Status:* *{status_code}*
 
 💡 *Rekomendasi:*
 {saran}
 ---------------------------------------------
-_Generated automatically via Google Earth Engine & Python_
+_Generated automatically via Open-Meteo API & Python_
 """
 
-    print(f"Hasil Analisis Curah Hujan: {rain_val_rounded} mm")
-    print(f"Status: {status_code}")
+# ---------------------------------------------------------
+# 4. KIRIM NOTIFIKASI KE TELEGRAM
+# ---------------------------------------------------------
+url_tele = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+res = requests.post(url_tele, json={"chat_id": CHAT_ID, "text": pesan_telegram, "parse_mode": "Markdown"}).json()
 
-    # Kirim notifikasi ke Telegram
-    res = send_telegram_alert(pesan_telegram, TELEGRAM_TOKEN, CHAT_ID)
-    if res.get("ok"):
-        print("🚀 Notifikasi Peringatan Dini BERHASIL terkirim ke Telegram!")
-    else:
-        print("❌ Gagal mengirim pesan:", res)
-
+if res.get("ok"):
+    print("🚀 Notifikasi Peringatan Dini BERHASIL terkirim ke Telegram!")
 else:
-    print("Gagal mengambil data curah hujan dari GEE.")
+    print("❌ Gagal mengirim pesan:", res)
