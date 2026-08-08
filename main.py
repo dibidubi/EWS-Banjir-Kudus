@@ -93,7 +93,7 @@ df.to_csv(filename, index=False)
 print(f"\n🎉 Berhasil! Data {len(df)} hari telah diekstrak.")
 
 #Mengunduh otomatis file ke komputer
-files.download(filename)
+#files.download(filename)
 
 import ee
 import geemap
