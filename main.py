@@ -185,9 +185,9 @@ import geemap
     #Inisialisasi project
 project_id = 'cogent-treat-504315-g3'
     #ee.Initialize(project=project_id)
-    print(f"Berhasil! Project {project_id} siap digunakan.")
-except Exception as e:
-    print(f"Gagal: {e}")
+#    print(f"Berhasil! Project {project_id} siap digunakan.")
+#except Exception as e:
+#    print(f"Gagal: {e}")
 
 import ee
 
