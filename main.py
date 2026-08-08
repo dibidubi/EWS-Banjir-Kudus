@@ -114,14 +114,12 @@ _Generated automatically via Google Earth Engine & Python_
     print(f"Hasil Analisis Curah Hujan: {rain_val_rounded} mm")
     print(f"Status: {status_code}")
 
-    if rain_val_rounded >= THRESHOLD_SIAGA:
-        res = send_telegram_alert(pesan_telegram, TELEGRAM_TOKEN, CHAT_ID)
-        if res.get("ok"):
-            print("🚀 Notifikasi Peringatan Dini BERHASIL terkirim ke Telegram!")
-        else:
-            print("❌ Gagal mengirim pesan:", res)
+# Selalu kirim notifikasi ke Telegram (Termasuk status AMAN/SIAGA/AWAS)
+    res = send_telegram_alert(pesan_telegram, TELEGRAM_TOKEN, CHAT_ID)
+    if res.get("ok"):
+        print("🚀 Notifikasi Peringatan Dini BERHASIL terkirim ke Telegram!")
     else:
-        print("Kondisi aman, tidak ada notifikasi darurat yang dikirim.")
+        print("❌ Gagal mengirim pesan:", res)
 
 else:
     print("Gagal mengambil data curah hujan dari GEE.")
