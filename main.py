@@ -17,10 +17,10 @@ import pandas as pd
 project_id = 'cogent-treat-504315-g3' #Inisialisasi GEE dengan project_id yang akan digunakan
 
 #try:
-    #ee.Initialize(project=project_id)
+#ee.Initialize(project=project_id)
 #except Exception as e:
-    #ee.Authenticate()
-    #ee.Initialize(project=project_id)
+#ee.Authenticate()
+#ee.Initialize(project=project_id)
 
 import os
 import json
@@ -30,7 +30,7 @@ import ee
 gee_secret = os.environ.get('GEE_SERVICE_ACCOUNT_JSON')
 
 if gee_secret:
-    # Otentikasi otomatis di GitHub Actions
+# Otentikasi otomatis di GitHub Actions
     key_dict = json.loads(gee_secret)
     credentials = ee.ServiceAccountCredentials(
         key_dict['client_email'], 
@@ -982,11 +982,11 @@ import datetime
 #try:
 #    ee.Authenticate()
 
-    project_id = 'cogent-treat-504315-g3'
- #   ee.Initialize(project=project_id)
- #   print(f"Berhasil! Project {project_id} siap digunakan.")
+#    project_id = 'cogent-treat-504315-g3'
+#   ee.Initialize(project=project_id)
+#   print(f"Berhasil! Project {project_id} siap digunakan.")
 #except Exception as e:
- #   print(f"Gagal: {e}")
+#   print(f"Gagal: {e}")
 
 TELEGRAM_TOKEN = "8766604439:AAFan6okia5TG_WEr1YFUeidnT9MgLqxKh8"
 CHAT_ID = "@notifperingatandini"
@@ -1093,9 +1093,9 @@ from IPython.display import display
 
 # Initialize GEE
 #try:
- #   ee.Initialize(project='cogent-treat-504315-g3')
+#   ee.Initialize(project='cogent-treat-504315-g3')
 #except Exception as e:
- #   print(f"Error initializing Earth Engine: {e}")
+#   print(f"Error initializing Earth Engine: {e}")
 
 # Define Kudus region (from cell u9gK0OAe2IWI)
 kudus = ee.FeatureCollection('FAO/GAUL/2015/level2') \
