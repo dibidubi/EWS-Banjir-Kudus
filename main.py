@@ -30,10 +30,10 @@ roi = ee.Geometry.Point([LON, LAT])
 THRESHOLD_SIAGA = 100.0
 THRESHOLD_AWAS = 150.0
 
-# Rentang tanggal H-6 sampai H-3 untuk menghindari lag ketersediaan data CHIRPS
+# Mundurkan tanggal ke H-10 sampai H-5 agar pasti mendapatkan data CHIRPS dari GEE
 today = datetime.date.today()
-end_date = today - datetime.timedelta(days=3)
-start_date = end_date - datetime.timedelta(days=3)
+end_date = today - datetime.timedelta(days=5)
+start_date = today - datetime.timedelta(days=10)
 
 # ---------------------------------------------------------
 # 3. AMBIL DATA CHIRPS DARI GEE
