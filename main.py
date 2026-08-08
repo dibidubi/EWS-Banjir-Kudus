@@ -178,9 +178,9 @@ import geemap
 #Jika error 'Project not registered' artinya project 'project_id' belum terdaftar di platform Google Earth Engine
 #Solusinya buka: https://console.cloud.google.com/earth-engine/configuration?project=project_id, lalu daftarkan project tersebut
 
-try:
+#try:
     #Autentikasi
-    ee.Authenticate()
+#    ee.Authenticate()
 
     #Inisialisasi project
 project_id = 'cogent-treat-504315-g3'
@@ -197,18 +197,18 @@ def verifikasi_status_gee(project_id):
         #Mencoba inisialisasi
         #ee.Initialize(project=project_id)
         #Mencoba panggilan API
-        ee.data.getAlgorithms()
-        print("✅ STATUS: SUKSES. Earth Engine API aktif dan Project sudah terdaftar.")
-    except Exception as e:
-        error_msg = str(e)
-        if "not used in project" in error_msg or "disabled" in error_msg:
-            print("❌ STATUS: API BELUM AKTIF.")
-            print(f"Silakan klik tautan ini untuk mengaktifkan: https://console.developers.google.com/apis/api/earthengine.googleapis.com/overview?project={project_id}")
-        elif "not registered" in error_msg:
-            print("❌ STATUS: API AKTIF, TAPI PROJECT BELUM TERDAFTAR.")
-            print(f"Silakan daftar di: https://console.cloud.google.com/earth-engine/configuration?project={project_id}")
-        else:
-            print(f"❌ STATUS: ERROR LAINNYA.\nDetail: {error_msg}")
+   #     ee.data.getAlgorithms()
+   #     print("✅ STATUS: SUKSES. Earth Engine API aktif dan Project sudah terdaftar.")
+   # except Exception as e:
+   #     error_msg = str(e)
+    #    if "not used in project" in error_msg or "disabled" in error_msg:
+    #        print("❌ STATUS: API BELUM AKTIF.")
+     #       print(f"Silakan klik tautan ini untuk mengaktifkan: https://console.developers.google.com/apis/api/earthengine.googleapis.com/overview?project={project_id}")
+     #   elif "not registered" in error_msg:
+     #       print("❌ STATUS: API AKTIF, TAPI PROJECT BELUM TERDAFTAR.")
+      #      print(f"Silakan daftar di: https://console.cloud.google.com/earth-engine/configuration?project={project_id}")
+      #  else:
+       #     print(f"❌ STATUS: ERROR LAINNYA.\nDetail: {error_msg}")
 
 #Ganti dengan project ID yang akan digunakan
 verifikasi_status_gee('cogent-treat-504315-g3')
@@ -227,12 +227,12 @@ ee.Authenticate()
 #Inisialisasi dengan Project ID yang sudah didaftarkan, pastikan sudah daftar di: https://console.cloud.google.com/earth-engine/configuration?project=premium-project_id
 project_id = 'cogent-treat-504315-g3'
 
-try:
+#try:
 #    ee.Initialize(project=project_id)
-    print(f"Berhasil terhubung ke Google Earth Engine dengan project: {project_id}")
-except Exception as e:
-    print(f"Gagal inisialisasi: {e}")
-    print("\nPASTIKAN: Project ID sudah terdaftar di Google Cloud Console dan Earth Engine API sudah diaktifkan.")
+#    print(f"Berhasil terhubung ke Google Earth Engine dengan project: {project_id}")
+#except Exception as e:
+#    print(f"Gagal inisialisasi: {e}")
+#    print("\nPASTIKAN: Project ID sudah terdaftar di Google Cloud Console dan Earth Engine API sudah diaktifkan.")
 
 import ee
 import geemap
@@ -979,14 +979,14 @@ import ee
 import requests
 import datetime
 
-try:
-    ee.Authenticate()
+#try:
+#    ee.Authenticate()
 
     project_id = 'cogent-treat-504315-g3'
-    ee.Initialize(project=project_id)
-    print(f"Berhasil! Project {project_id} siap digunakan.")
-except Exception as e:
-    print(f"Gagal: {e}")
+ #   ee.Initialize(project=project_id)
+ #   print(f"Berhasil! Project {project_id} siap digunakan.")
+#except Exception as e:
+ #   print(f"Gagal: {e}")
 
 TELEGRAM_TOKEN = "8766604439:AAFan6okia5TG_WEr1YFUeidnT9MgLqxKh8"
 CHAT_ID = "@notifperingatandini"
@@ -1092,10 +1092,10 @@ import ipywidgets as widgets
 from IPython.display import display
 
 # Initialize GEE
-try:
-    ee.Initialize(project='cogent-treat-504315-g3')
-except Exception as e:
-    print(f"Error initializing Earth Engine: {e}")
+#try:
+ #   ee.Initialize(project='cogent-treat-504315-g3')
+#except Exception as e:
+ #   print(f"Error initializing Earth Engine: {e}")
 
 # Define Kudus region (from cell u9gK0OAe2IWI)
 kudus = ee.FeatureCollection('FAO/GAUL/2015/level2') \
@@ -1153,10 +1153,10 @@ import geemap
 import ipywidgets as widgets
 
 # Initialize GEE
-try:
-    ee.Initialize(project='cogent-treat-504315-g3')
-except Exception as e:
-    print(f"Error initializing Earth Engine: {e}")
+#try:
+#    ee.Initialize(project='cogent-treat-504315-g3')
+#except Exception as e:
+#    print(f"Error initializing Earth Engine: {e}")
 
 # Define Kudus region (consistent with previous cells)
 kudus = ee.FeatureCollection('FAO/GAUL/2015/level2') \
