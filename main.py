@@ -1,15 +1,19 @@
 import ee
 import requests
 import datetime
+import os
 
-try:
-    ee.Authenticate()
+# 1. INISIALISASI EARTH ENGINE (UNTUK GITHUB ACTIONS)
+project_id = 'cogent-treat-504315-g3'
+ee_key = os.environ.get("GCP_SA_KEY")
 
-    project_id = 'cogent-treat-504315-g3'
+if ee_key:
+    # Berjalan di GitHub Actions menggunakan Service Account
+    credentials = ee.ServiceAccountCredentials(None, key_data=ee_key)
+    ee.Initialize(credentials, project=project_id)
+else:
+    # Berjalan di komputer lokal / Google Colab
     ee.Initialize(project=project_id)
-    print(f"Berhasil! Project {project_id} siap digunakan.")
-except Exception as e:
-    print(f"Gagal: {e}")
 
 TELEGRAM_TOKEN = "8766604439:AAFan6okia5TG_WEr1YFUeidnT9MgLqxKh8"
 CHAT_ID = "@notifperingatandini"
