@@ -19,8 +19,27 @@ project_id = 'cogent-treat-504315-g3' #Inisialisasi GEE dengan project_id yang a
 try:
     ee.Initialize(project=project_id)
 except Exception as e:
-    ee.Authenticate()
-    ee.Initialize(project=project_id)
+    #ee.Authenticate()
+    #ee.Initialize(project=project_id)
+
+import os
+import json
+import ee
+
+# Membaca Service Account JSON dari GitHub Secrets
+gee_secret = os.environ.get('GEE_SERVICE_ACCOUNT_JSON')
+
+if gee_secret:
+    # Otentikasi otomatis di GitHub Actions
+    key_dict = json.loads(gee_secret)
+    credentials = ee.ServiceAccountCredentials(
+        key_dict['client_email'], 
+        key_data=gee_secret
+    )
+    ee.Initialize(credentials=credentials)
+else:
+    # Fallback untuk running lokal/Colab
+    ee.Initialize()
 
 print("Autentikasi GEE Berhasil!")
 
