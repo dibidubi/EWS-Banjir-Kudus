@@ -9,3 +9,4 @@ xarray
 rioxarray
 cartopy
 geemap
+openpyxl
