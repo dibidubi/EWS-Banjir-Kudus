@@ -168,7 +168,7 @@ df.to_csv(filename, index=False, sep=';', decimal=',')
 print(f"\n🎉 Berhasil! Data {len(df)} hari telah diekstrak dan diformat untuk Excel Indonesia.")
 
 # 3. Mengunduh otomatis file ke komputer
-files.download(filename)
+#files.download(filename)
 
 #Autentikasi dan Inisialisasi Akses Google Earth Engine
 
@@ -535,11 +535,11 @@ import ee
 import geemap
 
 # 1. Inisialisasi GEE
-try:
-    ee.Initialize(project='cogent-treat-504315-g3')
-except:
-    ee.Authenticate()
-    ee.Initialize(project='cogent-treat-504315-g3')
+#try:
+#    ee.Initialize(project='cogent-treat-504315-g3')
+#except:
+#    ee.Authenticate()
+#    ee.Initialize(project='cogent-treat-504315-g3')
 
 # 2. Ambil Batas Administrasi Kabupaten Kudus (FAO GAUL / TIGER)
 kudus_boundary = ee.FeatureCollection("FAO/GAUL/2015/level2") \
@@ -928,11 +928,11 @@ plt.show()
 import ee
 import datetime
 
-try:
-  ee.Authenticate()
+#try:
+#  ee.Authenticate()
 
   project_id = 'cogent-treat-504315-g3'
-  ee.Initialize(project=project_id)
+#  ee.Initialize(project=project_id)
   print(f"Berhasil! Project {project_id} siap digunakan.")
 except Exception as e:
   print(f"Gagal: {e}")
