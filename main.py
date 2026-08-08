@@ -3,7 +3,9 @@ import requests
 import datetime
 import os
 
-# 1. INISIALISASI EARTH ENGINE (UNTUK GITHUB ACTIONS)
+# ---------------------------------------------------------
+# 1. INISIALISASI EARTH ENGINE
+# ---------------------------------------------------------
 project_id = 'cogent-treat-504315-g3'
 ee_key = os.environ.get("GCP_SA_KEY")
 
@@ -15,6 +17,9 @@ else:
     # Berjalan di komputer lokal / Google Colab
     ee.Initialize(project=project_id)
 
+# ---------------------------------------------------------
+# 2. KONFIGURASI BOT TELEGRAM & LOKASI
+# ---------------------------------------------------------
 TELEGRAM_TOKEN = "8766604439:AAFan6okia5TG_WEr1YFUeidnT9MgLqxKh8"
 CHAT_ID = "@notifperingatandini"
 
@@ -25,10 +30,13 @@ roi = ee.Geometry.Point([LON, LAT])
 THRESHOLD_SIAGA = 100.0
 THRESHOLD_AWAS = 150.0
 
-today = datetime.date(2020, 1, 8)
-
+# Ambil tanggal hari ini secara otomatis
+today = datetime.date.today()
 three_days_ago = today - datetime.timedelta(days=3)
 
+# ---------------------------------------------------------
+# 3. AMBIL DATA CHIRPS DARI GEE
+# ---------------------------------------------------------
 collection = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY") \
     .filterDate(three_days_ago.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d')) \
     .select('precipitation')
@@ -45,7 +53,6 @@ else:
         scale=5500,
         bestEffort=True,
         tileScale=16
-
     )
 
     stats_dict = stats.getInfo()
@@ -57,6 +64,9 @@ else:
         print(f"Kunci yang tersedia: {list(stats_dict.keys()) if stats_dict else 'Tidak ada kunci'}")
         rain_val = None
 
+# ---------------------------------------------------------
+# 4. FUNGSI KIRIM TELEGRAM
+# ---------------------------------------------------------
 def send_telegram_alert(message, token, chat_id):
     """Fungsi untuk mengirim notifikasi pesan ke Telegram"""
     url = f"https://api.telegram.org/bot{token}/sendMessage"
@@ -68,6 +78,9 @@ def send_telegram_alert(message, token, chat_id):
     response = requests.post(url, json=payload)
     return response.json()
 
+# ---------------------------------------------------------
+# 5. EVALUASI DAN KIRIM NOTIFIKASI
+# ---------------------------------------------------------
 if rain_val is not None:
     rain_val_rounded = round(rain_val, 2)
 
