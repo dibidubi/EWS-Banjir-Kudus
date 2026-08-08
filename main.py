@@ -183,8 +183,8 @@ try:
     ee.Authenticate()
 
     #Inisialisasi project
-    project_id = 'cogent-treat-504315-g3'
-    ee.Initialize(project=project_id)
+project_id = 'cogent-treat-504315-g3'
+    #ee.Initialize(project=project_id)
     print(f"Berhasil! Project {project_id} siap digunakan.")
 except Exception as e:
     print(f"Gagal: {e}")
@@ -193,9 +193,9 @@ import ee
 
 def verifikasi_status_gee(project_id):
     print(f"Memeriksa status untuk project: {project_id}...")
-    try:
+    #try:
         #Mencoba inisialisasi
-        ee.Initialize(project=project_id)
+        #ee.Initialize(project=project_id)
         #Mencoba panggilan API
         ee.data.getAlgorithms()
         print("✅ STATUS: SUKSES. Earth Engine API aktif dan Project sudah terdaftar.")
@@ -228,7 +228,7 @@ ee.Authenticate()
 project_id = 'cogent-treat-504315-g3'
 
 try:
-    ee.Initialize(project=project_id)
+#    ee.Initialize(project=project_id)
     print(f"Berhasil terhubung ke Google Earth Engine dengan project: {project_id}")
 except Exception as e:
     print(f"Gagal inisialisasi: {e}")
@@ -621,8 +621,8 @@ import ee
 import geemap
 
 # Inisialisasi Earth Engine
-try:
-    project_id = 'cogent-treat-504315-g3'
+#try:
+project_id = 'cogent-treat-504315-g3'
     ee.Initialize(project=project_id)
     print("Earth Engine berhasil diinisialisasi!")
 except Exception as e:
@@ -931,7 +931,7 @@ import datetime
 #try:
 #  ee.Authenticate()
 
-  project_id = 'cogent-treat-504315-g3'
+project_id = 'cogent-treat-504315-g3'
 #  ee.Initialize(project=project_id)
   print(f"Berhasil! Project {project_id} siap digunakan.")
 except Exception as e:
