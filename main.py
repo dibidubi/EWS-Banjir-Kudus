@@ -3,7 +3,9 @@ import requests
 import datetime
 import os
 
+# ---------------------------------------------------------
 # 1. INISIALISASI EARTH ENGINE
+# ---------------------------------------------------------
 project_id = 'cogent-treat-504315-g3'
 ee_key = os.environ.get("GCP_SA_KEY")
 
@@ -15,7 +17,9 @@ else:
     # Berjalan di komputer lokal / Google Colab
     ee.Initialize(project=project_id)
 
+# ---------------------------------------------------------
 # 2. KONFIGURASI BOT TELEGRAM & LOKASI
+# ---------------------------------------------------------
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "8766604439:AAFan6okia5TG_WEr1YFUeidnT9MgLqxKh8")
 CHAT_ID = os.environ.get("CHAT_ID", "@notifperingatandini")
 
@@ -26,15 +30,16 @@ roi = ee.Geometry.Point([LON, LAT])
 THRESHOLD_SIAGA = 100.0
 THRESHOLD_AWAS = 150.0
 
-# Mencegah error data CHIRPS belum rilis:
-# Ambil rentang 3 hari yang sudah pasti rilis (H-6 sampai H-3)
+# Rentang tanggal H-6 sampai H-3 untuk menghindari lag ketersediaan data CHIRPS
 today = datetime.date.today()
 end_date = today - datetime.timedelta(days=3)
 start_date = end_date - datetime.timedelta(days=3)
 
+# ---------------------------------------------------------
 # 3. AMBIL DATA CHIRPS DARI GEE
+# ---------------------------------------------------------
 collection = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY") \
-    .filterDate(three_days_ago.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d')) \
+    .filterDate(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')) \
     .select('precipitation')
 
 if collection.size().getInfo() == 0:
@@ -56,8 +61,7 @@ else:
     if stats_dict and 'accumulated_precipitation' in stats_dict:
         rain_val = stats_dict['accumulated_precipitation']
     else:
-        print(f"Gagal menemukan kunci 'accumulated_precipitation' dalam hasil reduksi.")
-        print(f"Kunci yang tersedia: {list(stats_dict.keys()) if stats_dict else 'Tidak ada kunci'}")
+        print("Gagal menemukan kunci 'accumulated_precipitation' dalam hasil reduksi.")
         rain_val = None
 
 # ---------------------------------------------------------
@@ -98,7 +102,7 @@ if rain_val is not None:
 ---------------------------------------------
 📍 *Lokasi Monitor:* {LOKASI_NAMA}
 📅 *Tanggal Analisis:* {today.strftime('%d %B %Y')}
-🌧️ *Akumulasi Hujan (3-Hari):* {rain_val_rounded} mm
+🌧️ *Akumulasi Hujan (3-Hari Terakhir):* {rain_val_rounded} mm
 📊 *Status:* *{status_code}*
 
 💡 *Rekomendasi:*
@@ -110,7 +114,7 @@ _Generated automatically via Google Earth Engine & Python_
     print(f"Hasil Analisis Curah Hujan: {rain_val_rounded} mm")
     print(f"Status: {status_code}")
 
-# Selalu kirim notifikasi ke Telegram (Termasuk status AMAN/SIAGA/AWAS)
+    # Kirim notifikasi ke Telegram
     res = send_telegram_alert(pesan_telegram, TELEGRAM_TOKEN, CHAT_ID)
     if res.get("ok"):
         print("🚀 Notifikasi Peringatan Dini BERHASIL terkirim ke Telegram!")
