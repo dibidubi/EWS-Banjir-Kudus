@@ -486,7 +486,7 @@ print(f"🚨 Total Ditemukan {len(potensi_banjir_10thn)} Kejadian Potensi Banjir
 if len(potensi_banjir_10thn) > 0:
     # Tampilkan seluruh baris hasil filter
     pd.set_option('display.max_rows', None) # Agar tidak terpotong saat di-display
-    display(potensi_banjir_10thn[['Tanggal', 'Curah_Hujan_mm', 'Akumulasi_3Hari_mm', 'Akumulasi_5Hari_mm']])
+    #display(potensi_banjir_10thn[['Tanggal', 'Curah_Hujan_mm', 'Akumulasi_3Hari_mm', 'Akumulasi_5Hari_mm']])
 
     # Simpan ke Excel 10 Tahun
     potensi_banjir_10thn.to_excel("Kejadian_Potensi_Banjir_Akumulasi3Hari_Kudus_2016_2025.xlsx", index=False)
