@@ -98,7 +98,7 @@ print(f"\n🎉 Berhasil! Data {len(df)} hari telah diekstrak.")
 import ee
 import geemap
 import pandas as pd
-from google.colab import files
+#from google.colab import files
 
 project_id = 'cogent-treat-504315-g3'
 
