@@ -16,9 +16,9 @@ import pandas as pd
 
 project_id = 'cogent-treat-504315-g3' #Inisialisasi GEE dengan project_id yang akan digunakan
 
-try:
-    ee.Initialize(project=project_id)
-except Exception as e:
+#try:
+    #ee.Initialize(project=project_id)
+#except Exception as e:
     #ee.Authenticate()
     #ee.Initialize(project=project_id)
 
