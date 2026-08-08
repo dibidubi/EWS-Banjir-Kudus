@@ -102,11 +102,11 @@ import pandas as pd
 
 project_id = 'cogent-treat-504315-g3'
 
-try:
-    ee.Initialize(project=project_id)
-except Exception as e:
-    ee.Authenticate()
-    ee.Initialize(project=project_id)
+#try:
+#    ee.Initialize(project=project_id)
+#except Exception as e:
+#    ee.Authenticate()
+#    ee.Initialize(project=project_id)
 
 print("Autentikasi GEE Berhasil!")
 
