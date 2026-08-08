@@ -623,10 +623,10 @@ import geemap
 # Inisialisasi Earth Engine
 #try:
 project_id = 'cogent-treat-504315-g3'
-    ee.Initialize(project=project_id)
-    print("Earth Engine berhasil diinisialisasi!")
-except Exception as e:
-    print(f"Gagal inisialisasi: {e}")
+#    ee.Initialize(project=project_id)
+#    print("Earth Engine berhasil diinisialisasi!")
+#except Exception as e:
+#    print(f"Gagal inisialisasi: {e}")
 
 # 1. Tentukan ROI & Wilayah Administrasi KABUPATEN KUDUS
 # Koordinat Kotak Bounding Box Kudus
