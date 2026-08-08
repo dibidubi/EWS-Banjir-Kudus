@@ -3,9 +3,7 @@ import requests
 import datetime
 import os
 
-# ---------------------------------------------------------
 # 1. INISIALISASI EARTH ENGINE
-# ---------------------------------------------------------
 project_id = 'cogent-treat-504315-g3'
 ee_key = os.environ.get("GCP_SA_KEY")
 
@@ -17,11 +15,9 @@ else:
     # Berjalan di komputer lokal / Google Colab
     ee.Initialize(project=project_id)
 
-# ---------------------------------------------------------
 # 2. KONFIGURASI BOT TELEGRAM & LOKASI
-# ---------------------------------------------------------
-TELEGRAM_TOKEN = "8766604439:AAFan6okia5TG_WEr1YFUeidnT9MgLqxKh8"
-CHAT_ID = "@notifperingatandini"
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "8766604439:AAFan6okia5TG_WEr1YFUeidnT9MgLqxKh8")
+CHAT_ID = os.environ.get("CHAT_ID", "@notifperingatandini")
 
 LOKASI_NAMA = "Kabupaten Kudus (DAS Sungai Wulan)"
 LAT, LON = -6.8321, 110.8423
@@ -30,13 +26,13 @@ roi = ee.Geometry.Point([LON, LAT])
 THRESHOLD_SIAGA = 100.0
 THRESHOLD_AWAS = 150.0
 
-# Ambil tanggal hari ini secara otomatis
+# Mencegah error data CHIRPS belum rilis:
+# Ambil rentang 3 hari yang sudah pasti rilis (H-6 sampai H-3)
 today = datetime.date.today()
-three_days_ago = today - datetime.timedelta(days=3)
+end_date = today - datetime.timedelta(days=3)
+start_date = end_date - datetime.timedelta(days=3)
 
-# ---------------------------------------------------------
 # 3. AMBIL DATA CHIRPS DARI GEE
-# ---------------------------------------------------------
 collection = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY") \
     .filterDate(three_days_ago.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d')) \
     .select('precipitation')
