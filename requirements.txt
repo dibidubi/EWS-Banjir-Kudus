@@ -1,3 +1,7 @@
 earthengine-api
 requests
 google-api-python-client
+geopandas
+rasterio
+matplotlib
+earthpy
