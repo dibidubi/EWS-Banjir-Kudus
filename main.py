@@ -222,7 +222,7 @@ if os.path.exists(os.path.expanduser('~/.config/earthengine/credentials')):
     os.remove(os.path.expanduser('~/.config/earthengine/credentials'))
 
 #Jalankan autentikasi, klik tautan yang muncul, pilih akun Google yang akan digunakan, dan berikan izin akses. Salin kode verifikasi jika diminta
-ee.Authenticate()
+#ee.Authenticate()
 
 #Inisialisasi dengan Project ID yang sudah didaftarkan, pastikan sudah daftar di: https://console.cloud.google.com/earth-engine/configuration?project=premium-project_id
 project_id = 'cogent-treat-504315-g3'
@@ -238,10 +238,10 @@ import ee
 import geemap
 
 #Autentikasi & Inisialisasi
-ee.Authenticate() #Otorisasi akun Google (Jalankan ini jika diminta login)
+#ee.Authenticate() #Otorisasi akun Google (Jalankan ini jika diminta login)
 
 #Perbaikan: Tambahkan `project=` dan kurung tanda petik (' ') pada Project ID
-ee.Initialize(project='cogent-treat-504315-g3')
+#ee.Initialize(project='cogent-treat-504315-g3')
 
 #Menentukan wilayah studi : Kabupaten Kudus
 #Menggunakan batas administrasi resmi GEE (FAO GAUL Level 2)
